@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <AssemblyName>AnotherRae.Ews</AssemblyName>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <RuntimeIdentifiers>linux-x64;win-x64</RuntimeIdentifiers>
+    <RuntimeFrameworkVersion>10.0.14</RuntimeFrameworkVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="THIRD_PARTY_NOTICES.md" CopyToPublishDirectory="PreserveNewest" />
+    <None Include="licenses/*.txt" CopyToPublishDirectory="PreserveNewest" />
+    <PackageReference Include="MimeKit" Version="4.18.2" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.14" />
+  </ItemGroup>
+</Project>

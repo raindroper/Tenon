@@ -1,0 +1,41 @@
+[Unit]
+Description=Tenon personal agent
+After=network-online.target workbuddy-gateway.service
+Wants=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=anotherrae
+Group=anotherrae
+WorkingDirectory=@APP_RELEASE@
+EnvironmentFile=/etc/anotherrae/anotherrae.env
+Environment=PATH=/opt/anotherrae-runtime/node-v24.22.1-linux-x64/bin:/usr/bin:/bin
+Environment=HOME=/var/lib/anotherrae
+Environment=NODE_OPTIONS=--max-old-space-size=512
+Environment=TZ=UTC
+ExecStart=/opt/anotherrae-runtime/node-v24.22.1-linux-x64/bin/node --import tsx @APP_RELEASE@/server/index.ts
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=90
+UMask=0077
+StateDirectory=anotherrae
+StateDirectoryMode=0700
+CacheDirectory=anotherrae
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+ReadWritePaths=/var/lib/anotherrae /var/cache/anotherrae
+MemoryHigh=650M
+MemoryMax=900M
+CPUQuota=100%
+TasksMax=128
+
+[Install]
+WantedBy=multi-user.target

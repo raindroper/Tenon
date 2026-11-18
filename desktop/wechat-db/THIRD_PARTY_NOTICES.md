@@ -1,0 +1,7 @@
+# WeChat database worker notices
+
+`scanner.py` adapts the bounded `Config.Cipher` matching and first-page SQLCipher key verification from TheRaptors/wechat-cli at `6770e1e0c0847e193fb3e3b22e4cd6b93de9aacc` under Apache-2.0. The audited originals are `scanner_windows.py` (SHA-256 `e27fe860ade2d3787ab0abad3afeeca03f9e5073f471bb5742e3e575f47117db`) and `common.py` (SHA-256 `371f9af53ccd3a7d47fddfde7ca2b046b3e79c086b8373261ba72b30c8a82fce`). Rae changed process and account binding, scan limits, error handling and key handling, and removed the upstream logs, fallback scans and key export. [Pinned upstream](https://github.com/TheRaptors/wechat-cli/tree/6770e1e0c0847e193fb3e3b22e4cd6b93de9aacc)
+
+Upstream credits CloudDreamAI / TANGandXUE's `wcdb-key-tool` for the `Config.Cipher` layout. Its MIT notice is included as `LICENSE-WCDB-MIT.txt`, pinned at `79f1b5b92e12c66aa281b4a60a3c478b5f547dfa`. [Pinned license](https://github.com/TANGandXUE/wcdb-key-tool/blob/79f1b5b92e12c66aa281b4a60a3c478b5f547dfa/LICENSE)
+
+The packaged runtime includes CPython and the `sqlcipher3` binding. Their license files are shipped alongside those packages. The wheel's SQLCipher Community Edition 4.20.0 and OpenSSL 3.6.0 license texts are included as `LICENSE-SQLCIPHER.txt` and `LICENSE-OPENSSL.txt`. [SQLCipher license](https://github.com/sqlcipher/sqlcipher/blob/v4.20.0/LICENSE.md) [OpenSSL license](https://github.com/openssl/openssl/blob/openssl-3.6.0/LICENSE.txt)

@@ -1,0 +1,66 @@
+name: anotherrae-worker
+
+services:
+  worker:
+    image: ${RAE_WORKER_IMAGE:?Set RAE_WORKER_IMAGE}
+    pull_policy: never
+    init: true
+    user: "20002:20002"
+    environment:
+      RAE_WORKER_DEVICE_ID: ${RAE_WORKER_DEVICE_ID:?Set the enrolled worker id}
+    read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+      - apparmor=anotherrae-project-worker
+      - seccomp=${RAE_WORKER_OPS_DIR:-/srv/anotherrae-worker-ops}/seccomp.json
+      # bubblewrap mounts a fresh procfs. AppArmor and the mount/PID namespaces restrict its contents.
+      - systempaths=unconfined
+    cgroup: private
+    cpus: 0.5
+    mem_limit: 768m
+    memswap_limit: 768m
+    pids_limit: 128
+    ulimits:
+      core: 0
+    tmpfs:
+      - /work:rw,exec,nosuid,nodev,size=256m,mode=0700,uid=20002,gid=20002
+    volumes:
+      - type: bind
+        source: ${RAE_WORKER_STATE_DIR:-/srv/anotherrae-worker}/journal
+        target: /var/lib/rae-worker
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${RAE_WORKER_STATE_DIR:-/srv/anotherrae-worker}/credential
+        target: /run/rae-worker-credential
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${RAE_WORKER_API_DIR:-/run/anotherrae-worker-api}
+        target: /run/rae-device-api
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${RAE_WORKER_OPS_DIR:-/srv/anotherrae-worker-ops}/worker.resolv.conf
+        target: /etc/resolv.conf
+        read_only: true
+        bind:
+          create_host_path: false
+    dns: [1.1.1.1, 1.0.0.1]
+    networks: [egress]
+    stop_grace_period: 90s
+    logging:
+      driver: local
+      options:
+        max-size: 5m
+        max-file: "2"
+
+networks:
+  egress:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: br-rae-worker
+    enable_ipv6: false

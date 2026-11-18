@@ -1,0 +1,22 @@
+title = "Tenon secret scanning"
+
+[extend]
+useDefault = true
+
+# These are storage/fixture selectors, not authentication material. Match both
+# the exact value and its file; all other keys in those files remain scanned.
+[[allowlists]]
+description = "Browser notification preference storage key"
+targetRules = ["generic-api-key"]
+condition = "AND"
+paths = ['''(^|/)client/lib/notifications\.ts$''']
+regexTarget = "secret"
+regexes = ['''^rae\.notifications\.v1$''']
+
+[[allowlists]]
+description = "Synthetic memory capacity fixture selector"
+targetRules = ["generic-api-key"]
+condition = "AND"
+paths = ['''(^|/)tests/v2-personal-memory\.test\.ts$''']
+regexTarget = "secret"
+regexes = ['''^fixture\.capacity-0$''']

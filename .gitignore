@@ -1,0 +1,27 @@
+node_modules/
+dist/
+data/
+.env
+.env.*
+!.env.example
+*.log
+test-results/
+.local/
+server/connectors/ews-native/bin/
+server/connectors/ews-native/obj/
+tests/ews-native/bin/
+tests/ews-native/obj/
+
+# Private credentials, databases and local repository/archive backups.
+*.pem
+*.key
+*.p12
+*.pfx
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+*.bundle
+*.tar
+*.tgz
+*.zip

@@ -1,0 +1,64 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'"><title>榫 · 本地设备</title><link rel="stylesheet" href="controller.css"></head><body><main>
+<header><img class="mark" src="tray.png" alt=""><h1>本地设备</h1><button id="chat" class="quiet">打开对话 ↗</button></header>
+<section class="connection"><div class="status-label"><span class="dot"></span><strong id="status" role="status">正在读取设备状态…</strong></div></section>
+<section class="wechat-source" aria-labelledby="wechat-heading">
+  <div class="section-top"><h2 id="wechat-heading">微信会话观察</h2><span id="wechat-phase" class="badge">正在读取状态…</span></div>
+  <p>开启观察后，所选会话在授权时段内收发的文字和其他消息的类型会上传至 <strong id="wechat-server">配对时指定的服务</strong>，并记入所选场景。</p>
+  <p class="wechat-limit">最小化或锁屏时仍会采集。电脑休眠、关机或微信退出后，下次恢复时补采已同步到本机的记录。</p>
+  <div id="wechat-startup" class="wechat-startup" hidden>
+    <div>
+      <label class="wechat-checkbox"><input id="wechat-auto-start" type="checkbox" disabled><span>启动时自动观察</span></label>
+      <p>关闭会停止全部观察。再次开启后，已启用的会话会从上次进度补采。</p>
+    </div>
+    <button id="wechat-save-startup" type="button" class="secondary" disabled>保存设置</button>
+  </div>
+  <div id="wechat-saved" class="wechat-saved" hidden>
+    <div class="wechat-subheading"><h3>已选会话</h3><span id="wechat-saved-count"></span></div>
+    <div id="wechat-entries" class="wechat-entries"></div>
+    <p id="wechat-no-entries">暂无已选会话。</p>
+  </div>
+  <div id="wechat-picker" hidden>
+    <h3>添加会话</h3>
+    <p class="wechat-status">首次接入会核验微信签名和数据库兼容性，并读取微信进程以访问聊天记录。数据库和密钥留在本机。</p>
+    <div class="wechat-controls">
+      <label>本机会话<input id="wechat-search" type="search" maxlength="120" autocomplete="off" placeholder="联系人或群名" aria-describedby="wechat-window-hint" disabled></label>
+      <button id="wechat-find" type="button" class="secondary" disabled>查找会话</button>
+    </div>
+    <p id="wechat-window-hint" class="wechat-status" role="status" hidden></p>
+    <div id="wechat-windows" class="wechat-windows" aria-label="可选微信会话" hidden></div>
+    <div class="wechat-controls">
+      <label>关联场景<select id="wechat-topic" disabled><option value="">尚未读取</option></select></label>
+      <button id="wechat-topics" type="button" class="secondary" disabled>读取场景</button>
+    </div>
+    <div class="wechat-controls">
+      <label>首次采集范围<select id="wechat-history"><option value="now">从现在开始</option><option value="day">最近 24 小时及后续新消息</option><option value="custom">选择历史时段，并继续观察新消息</option></select></label>
+      <label>新消息分析间隔<select id="wechat-interval"><option value="10">每 10 分钟</option><option value="1">每 1 分钟</option><option value="30">每 30 分钟</option><option value="60">每 60 分钟</option></select></label>
+    </div>
+    <div id="wechat-history-range" class="wechat-controls" hidden>
+      <label>历史开始<input id="wechat-history-since" type="datetime-local"></label>
+      <label>历史结束（留空表示现在）<input id="wechat-history-until" type="datetime-local"></label>
+    </div>
+    <p class="wechat-status">仅采集本机已有记录。推理暂停时只接收消息，恢复后再分析。执行任务仍需授权。</p>
+    <div class="wechat-actions"><button id="wechat-add" type="button" disabled>保存所选会话</button><span id="wechat-selected" class="wechat-status"></span></div>
+  </div>
+  <p id="wechat-observation-status" class="wechat-status" role="status" hidden></p>
+  <p id="wechat-status" class="wechat-status" role="status" hidden></p>
+</section>
+<section class="desktop-update" aria-labelledby="update-heading">
+  <div class="section-top"><h2 id="update-heading">桌面更新</h2><span id="update-version" class="badge">正在读取版本…</span></div>
+  <p id="update-status" role="status">正在读取更新状态…</p>
+  <div class="update-actions"><button id="check-update" type="button" class="secondary" disabled>检查更新</button><button id="install-update" type="button" hidden>下载并安装</button></div>
+</section>
+<section><div class="section-top"><h2>设备配对</h2><span id="paired" class="badge">未连接</span></div><details id="pairing-settings"><summary>手动配对</summary><form id="pair-form"><label>服务地址<input id="base-url" type="url" placeholder="https://tenon.example.com" required autocomplete="url"></label><div class="columns"><label>设备名称<input id="device-name" maxlength="100" value="我的 Windows 电脑" required></label><label>一次性配对码<input id="pairing-token" type="password" autocomplete="off" required placeholder="在榫的设备页面获取"></label></div><button type="submit">配对这台电脑</button></form></details></section>
+<section id="previous-grants" hidden><div class="section-top"><div><h2>以前保存的本地授权</h2><p>以下授权可用于已经绑定它们的旧任务。</p></div></div><div id="grants" class="grants"></div></section>
+<footer><span id="execution-state">本地执行已暂停</span><div><button id="reconnect" class="secondary">重新连接</button> <button id="toggle" class="secondary">恢复本地执行</button></div></footer><p id="error" class="error" role="alert"></p></main>
+<dialog id="wechat-history-dialog" aria-labelledby="wechat-history-title">
+  <form id="wechat-history-form">
+    <h2 id="wechat-history-title">补采历史</h2>
+    <p>只补采本机已有记录，已接收的消息会自动去重。</p>
+    <label>历史开始<input id="wechat-replay-since" type="datetime-local" required></label>
+    <label>历史结束（留空表示现在）<input id="wechat-replay-until" type="datetime-local"></label>
+    <div class="wechat-actions"><button type="submit">补采并继续观察</button><button id="wechat-history-cancel" type="button" class="secondary">取消</button></div>
+  </form>
+</dialog>
+<script src="controller.js"></script></body></html>

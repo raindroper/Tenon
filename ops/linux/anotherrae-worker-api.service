@@ -1,0 +1,10 @@
+[Unit]
+Description=Tenon private device API relay
+
+[Service]
+ExecStart=/usr/lib/systemd/systemd-socket-proxyd 127.0.0.1:4317
+DynamicUser=yes
+User=rae-worker-relay
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes

@@ -1,0 +1,11 @@
+[Unit]
+Description=Tenon private device API socket
+
+[Socket]
+ListenStream=/run/anotherrae-worker-api/device.sock
+SocketMode=0660
+SocketGroup=anotherrae-worker-api
+RemoveOnStop=yes
+
+[Install]
+WantedBy=sockets.target

@@ -1,0 +1,54 @@
+name: anotherrae
+
+services:
+  ar:
+    image: ${ANOTHERRAE_IMAGE:?Set ANOTHERRAE_IMAGE to the locally built release image}
+    pull_policy: never
+    platform: linux/amd64
+    init: true
+    user: "20001:20001"
+    env_file:
+      - path: ${AR_STATE_DIR:-/srv/anotherrae}/private/anotherrae.env
+        format: raw
+    environment:
+      RAE_DATA_DIR: /var/lib/anotherrae/data
+      RAE_AUTH_FILE: /var/lib/anotherrae/private/web-user.json
+    volumes:
+      - type: bind
+        source: ${AR_STATE_DIR:-/srv/anotherrae}/data
+        target: /var/lib/anotherrae/data
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${AR_STATE_DIR:-/srv/anotherrae}/private/web-user.json
+        target: /var/lib/anotherrae/private/web-user.json
+        read_only: true
+        bind:
+          create_host_path: false
+    ports:
+      - "127.0.0.1:${AR_HOST_PORT:-4317}:4317"
+    read_only: true
+    tmpfs:
+      - /tmp:mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    stop_grace_period: -1s
+    cpus: 1.5
+    mem_reservation: 1g
+    mem_limit: 2g
+    pids_limit: 256
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - >-
+          fetch('http://127.0.0.1:4317/api/health', { signal: AbortSignal.timeout(5000) })
+          .then(response => { if (!response.ok) process.exitCode = 1 }, () => { process.exitCode = 1 })
+      interval: 30s
+      timeout: 6s
+      retries: 3
+      start_period: 20s

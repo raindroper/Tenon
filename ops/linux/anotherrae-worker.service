@@ -1,0 +1,18 @@
+[Unit]
+Description=Tenon isolated Linux task worker
+After=docker.service anotherrae-worker-api.socket
+Requires=docker.service anotherrae-worker-api.socket
+PartOf=docker.service
+
+[Service]
+Type=simple
+WorkingDirectory=/srv/anotherrae-worker-ops
+ExecStartPre=/usr/sbin/nft -f /srv/anotherrae-worker-ops/worker-egress.nft
+ExecStart=/usr/bin/docker compose --file worker.compose.yaml up --abort-on-container-exit --exit-code-from worker
+ExecStop=/usr/bin/docker compose --file worker.compose.yaml stop --timeout 90
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=110
+
+[Install]
+WantedBy=multi-user.target

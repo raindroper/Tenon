@@ -1,0 +1,93 @@
+.meeting-reminder {
+  --meeting-mint: #e4f1eb;
+  --meeting-teal: #245a49;
+  --meeting-line: #dce8e3;
+  --meeting-soft: #f2f7f5;
+  width: min(100%, 550px);
+  padding: clamp(15px, 3vw, 26px);
+  border: 1px solid var(--meeting-line);
+  border-radius: 18px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 8px 22px #213c3310;
+  overflow-wrap: anywhere;
+}
+.thread-assistant:not([data-card]) .message-tools { max-width: 550px; }
+.meeting-reminder-top, .meeting-reminder-kind, .meeting-reminder-status, .meeting-reminder-when,
+.meeting-reminder-mention, .meeting-reminder-room, .meeting-reminder-room-info,
+.meeting-reminder-copy, .meeting-reminder-details summary, .meeting-reminder-source {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.meeting-reminder-top, .meeting-reminder-room { justify-content: space-between; flex-wrap: wrap; }
+.meeting-reminder-kind, .meeting-reminder-mention, .meeting-reminder-details summary {
+  color: var(--meeting-teal);
+  font-size: 13px;
+  font-weight: 650;
+}
+.meeting-reminder-icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: var(--meeting-mint); }
+.meeting-reminder svg { flex-shrink: 0; }
+.meeting-reminder-status {
+  padding: 4px 9px;
+  border-radius: 100px;
+  background: var(--meeting-mint);
+  color: var(--meeting-teal);
+  font-size: 12px;
+  font-weight: 650;
+}
+.meeting-reminder-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.meeting-reminder-status[data-tone='urgent'] { background: #fbefe0; color: #87491e; }
+.meeting-reminder-status[data-tone='ended'] { background: var(--mist-soft); color: var(--muted); }
+.meeting-reminder h2 { margin: 16px 0 4px; font-size: clamp(19px, 3.6vw, 24px); line-height: 1.35; font-weight: 680; }
+.meeting-reminder-when { flex-wrap: wrap; column-gap: 12px; row-gap: 3px; align-items: baseline; }
+.meeting-reminder-hours {
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: clamp(23px, 4.4vw, 28px);
+  line-height: 1.3;
+  font-weight: 670;
+  letter-spacing: -.035em;
+  font-variant-numeric: tabular-nums;
+}
+.meeting-reminder-hours time { white-space: nowrap; }
+.meeting-reminder-hours small { display: inline-block; margin-inline: 4px; color: var(--muted); font-size: 12px; font-weight: 500; letter-spacing: 0; }
+.meeting-reminder-dash { color: var(--muted); font-weight: 400; }
+.meeting-reminder-date, .meeting-reminder-room-info, .meeting-reminder-source { color: var(--muted); font-size: 12px; }
+.meeting-reminder-mention { margin: 9px 0 0; }
+.meeting-reminder-room { margin-top: 13px; padding: 7px 9px 7px 12px; border-radius: 11px; background: var(--meeting-soft); }
+.meeting-reminder-room-info { min-width: 0; flex-wrap: wrap; }
+.meeting-reminder-number { color: var(--ink); font: 650 14px/1.5 ui-monospace, Consolas, monospace; }
+.meeting-reminder-copy {
+  justify-content: center;
+  min-height: 34px;
+  min-width: 104px;
+  padding: 4px 9px;
+  border: 1px solid var(--meeting-line);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--meeting-teal);
+  font-size: 12px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.meeting-reminder-copy:hover { background: var(--meeting-mint); }
+.meeting-reminder-copy-hint { flex-basis: 100%; color: var(--muted); font-size: 12px; }
+.meeting-reminder-details { margin-top: 6px; }
+.meeting-reminder-details summary { width: fit-content; min-height: 39px; list-style: none; cursor: pointer; }
+.meeting-reminder-details summary::-webkit-details-marker { display: none; }
+.meeting-reminder-details details[open] > summary svg, .meeting-reminder-details[open] > summary svg { transform: rotate(180deg); }
+.meeting-reminder-details dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 8px 12px; margin: 1px 0 8px; font-size: 13px; line-height: 1.65; }
+.meeting-reminder-details dt { font-weight: 650; }
+.meeting-reminder-details dd { margin: 0; color: var(--muted); }
+.meeting-reminder-details dd ul { margin: 0; padding-inline-start: 1.15em; }
+.meeting-reminder-original > summary { min-height: 32px; font-weight: 500; }
+.meeting-reminder-original .markdown { padding: 0 0 12px; color: var(--muted); font-size: 13px; }
+.meeting-reminder-source { align-items: flex-start; border-top: 1px solid var(--meeting-line); padding-top: 10px; line-height: 1.5; }
+.meeting-reminder-source svg { margin-top: 1px; }
+.meeting-reminder-source span { min-width: 0; }
+@media (pointer: coarse) {
+  .meeting-reminder-copy, .meeting-reminder-details summary { min-height: 44px; }
+}
